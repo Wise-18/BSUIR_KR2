@@ -1,0 +1,79 @@
+﻿@page
+@using BSUIR_KR1.UI.Areas.Admin.Pages
+@model IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h2>Управление блюдами</h2>
+    <a asp-page="Create" class="btn btn-primary">+ Create New</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Calories</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Products.Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Price</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Image))
+                    {
+                        <img src="@item.Image" alt="@item.Name" style="height: 50px;" />
+                    }
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-success">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Products.TotalPages > 1)
+{
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @{
+                var prevPage = Model.Products.CurrentPage > 1 ? Model.Products.CurrentPage - 1 : 1;
+                var nextPage = Model.Products.CurrentPage < Model.Products.TotalPages ? Model.Products.CurrentPage + 1 : Model.Products.TotalPages;
+            }
+
+            <li class="page-item @(Model.Products.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link" asp-route-pageNo="@prevPage">«</a>
+            </li>
+
+            @for (int i = 1; i <= Model.Products.TotalPages; i++)
+            {
+                <li class="page-item @(Model.Products.CurrentPage == i ? "active" : "")">
+                    <a class="page-link" asp-route-pageNo="@i">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.Products.CurrentPage == Model.Products.TotalPages ? "disabled" : "")">
+                <a class="page-link" asp-route-pageNo="@nextPage">»</a>
+            </li>
+        </ul>
+    </nav>
+}

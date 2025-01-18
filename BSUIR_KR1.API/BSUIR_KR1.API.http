@@ -1,0 +1,6 @@
+@BSUIR_KR1.API_HostAddress = http://localhost:5140
+
+GET {{BSUIR_KR1.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
